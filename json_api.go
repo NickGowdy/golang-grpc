@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"math/rand"
 	"net/http"
+
+	"github.com/NickGowdy/golang-grpc/types"
 )
 
 type APIFunc func(ctx context.Context, w http.ResponseWriter, r *http.Request) error
@@ -50,7 +52,7 @@ func (s *JSONAPIServer) HandleFetchPrice(ctx context.Context, w http.ResponseWri
 		return err
 	}
 
-	resp := priceResponse{
+	resp := types.PriceResponse{
 		Price:  price,
 		Ticker: ticker,
 	}
