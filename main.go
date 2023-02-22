@@ -3,10 +3,16 @@ package main
 import "flag"
 
 func main() {
-	port := flag.String("port", ":3000", "listen address of the service")
+	var (
+		jsonAddr = flag.String("json", ":3000", "listen address of the json transport")
+		grpcAddr = flag.String("grpc", ":4000", "listen address of the grpc transport")
+	)
 	flag.Parse()
 
 	svc := loggingService{priceService{}}
-	server := NewJSONAPIServer(*port, svc)
-	server.Run()
+
+	go makeGRPCServerAndRun(*grpcAddr, svc)
+
+	jsonServer := NewJSONAPIServer(*jsonAddr, svc)
+	jsonServer.Run()
 }
